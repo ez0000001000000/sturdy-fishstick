@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" style="-webkit-tap-highlight-color: #1be9d4; --selection-bg: linear-gradient(90deg, rgba(255, 105, 180, 0.5), rgba(0, 191, 255, 0.5), rgba(255, 255, 0, 0.5));">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=yes" />
+  <title>SnowBase Studio | Website Development</title>
+  <link rel="icon" href="https://snowbasestudio.com/logo.png" type="image/png" />
+  <link rel="shortcut icon" href="https://snowbasestudio.com/logo.png" type="image/png" />
+  <link rel="apple-touch-icon" href="https://snowbasestudio.com/logo.png" />
+  <meta name="description" content="SnowBase Studio is a premium AI development company creating high-converting solutions." />
+  <meta name="keywords" content="AI development, machine learning, data analytics, AI consulting, SnowBase Studio">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://snowbasestudio.com/">
+  <meta property="og:title" content="SnowBase Studio | AI Development">
+  <meta property="og:description" content="SnowBase Studio is a premium AI development company creating high-converting solutions.">
+  <meta property="og:image" content="https://snowbasestudio.com/preview.jpg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://snowbasestudio.com/">
+  <meta property="twitter:title" content="SnowBase Studio | AI Development">
+  <meta property="twitter:description" content="SnowBase Studio is a premium AI development company creating high-converting solutions.">
+  <meta property="twitter:image" content="https://snowbasestudio.com/preview.jpg">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* Let the browser handle zooming */
+    body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Colorful text selection */
+    ::selection {
+      background: var(--selection-bg);
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* For Firefox */
+    ::-moz-selection {
+      background: var(--selection-bg);
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Lucide Icons
+      lucide.createIcons();
+      
+      // Initialize snow animation
+      const canvas = document.getElementById('snow');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let animationId;
+        let flakes = [];
+        
+        // Set canvas size
+        function resizeCanvas() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        
+        // Snowflake class
+        class Snowflake {
+          constructor() {
+            this.reset();
+            this.y = Math.random() * canvas.height;
+          }
+          
+          reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * -100;
+            this.size = Math.random() * 2 + 1; // Smaller snowflakes
+            this.speed = Math.random() * 0.8 + 0.3; // Slower falling speed
+            this.angle = Math.random() * Math.PI * 2;
+            this.opacity = Math.random() * 0.5 + 0.5;
+          }
+          
+          update() {
+            this.y += this.speed;
+            this.x += Math.sin(this.angle) * 0.5;
+            this.angle += 0.01;
+            
+            if (this.y > canvas.height) {
+              this.reset();
+              this.y = -10;
+            }
+          }
+          
+          draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            // Use #00D7E6 in light theme, white in dark theme
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+              ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            } else {
+              // Convert #00D7E6 to RGB for rgba
+              ctx.fillStyle = `rgba(0, 215, 230, ${this.opacity})`;
+            }
+            ctx.fill();
+          }
+        }
+        
+        // Create snowflakes with responsive sizing
+        function createSnowflakes() {
+          // Cancel any ongoing animations to prevent memory leaks
+          if (animationId) {
+            cancelAnimationFrame(animationId);
+          }
+          
+          flakes = [];
+          const isDark = document.documentElement.classList.contains('dark');
+          const isMobile = window.innerWidth < 768; // Mobile breakpoint
+          
+          // Adjust snowflake count based on screen size and theme
+          let count;
+          if (isMobile) {
+            count = Math.floor(window.innerWidth / (isDark ? 20 : 30)); // Fewer on mobile
+          } else {
+            count = Math.floor(window.innerWidth / (isDark ? 15 : 40));
+          }
+          
+          for (let i = 0; i < count; i++) {
+            const flake = new Snowflake();
+            if (isMobile) {
+              // Make snowflakes smaller on mobile
+              flake.size = Math.random() * 1.5 + 0.5;
+              flake.speed = Math.random() * 0.6 + 0.2; // Slower on mobile
+            } else if (!isDark) {
+              // Make snowflakes smaller in light theme
+              flake.size = Math.random() * 2 + 1;
+            }
+            flakes.push(flake);
+          }
+          
+          // Restart animation
+          if (canvas) {
+            animate();
+          }
+        }
+        
+        // Animation loop
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          
+          flakes.forEach(flake => {
+            flake.update();
+            flake.draw();
+          });
+          
+          animationId = requestAnimationFrame(animate);
+        }
+        
+        // Handle window resize with debounce
+        let resizeTimeout;
+        let resizeTimer;
+        
+        function handleResize() {
+          // Clear the timeout if it exists
+          if (resizeTimeout) {
+            cancelAnimationFrame(resizeTimeout);
+          }
+          
+          // Debounce the resize handler
+          resizeTimeout = requestAnimationFrame(() => {
+            // Store current scroll position
+            const scrollY = window.scrollY;
+            
+            // Update canvas size and recreate snowflakes
+            resizeCanvas();
+            createSnowflakes();
+            
+            // Restore scroll position to prevent jumping
+            window.scrollTo(0, scrollY);
+          });
+        }
+        
+        // Initialize
+        resizeCanvas();
+        createSnowflakes();
+        
+        // Add optimized resize event listener
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(handleResize, 100);
+        });
+        
+        // Initial animation start
+        if (canvas) {
+          animate();
+        }
+        
+        // Clean up on unmount
+        return () => {
+          window.removeEventListener('resize', handleResize);
+          if (animationId) {
+            cancelAnimationFrame(animationId);
+          }
+          clearTimeout(resizeTimer);
+          if (resizeTimeout) {
+            cancelAnimationFrame(resizeTimeout);
+          }
+        };
+      }
+    });
+  </script>
+  
+  <style>
+    /* Theme transition settings */
+    :root {
+      --transition-duration: 100ms;
+      --transition-timing: ease;
+    }
+    
+    /* Theme transition styles */
+    /* Theme transition for background elements */
+    .theme-transition,
+    .theme-transition::before,
+    .theme-transition::after {
+      transition: 
+        background-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 600ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    /* Text color transitions - simplified to prevent blinking */
+    .theme-transition {
+      transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+                 border-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+                 box-shadow 600ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    /* Force immediate text color changes without transition */
+    .theme-transition * {
+      transition: none !important;
+      color: inherit !important;
+    }
+    
+    /* Disable transitions during initial page load */
+    .no-transition,
+    .no-transition *,
+    .no-transition::before,
+    .no-transition::after {
+      transition: none !important;
+    }
+    
+    /* Ensure text colors are always visible and stable */
+    body {
+      color-scheme: light dark;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    
+    .text-foreground {
+      color: hsl(var(--foreground)) !important;
+      transition: none !important;
+    }
+    
+    /* Smooth background transitions only */
+    html {
+      transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1);
+      color: inherit !important;
+    }
+    
+    /* Force text to stay solid during transitions */
+    * {
+      transition: none !important;
+      color: inherit !important;
+    }
+    
+    /* Background elements that should transition */
+    body,
+    .bg-background,
+    .bg-card,
+    .bg-muted,
+    .bg-popover,
+    .text-foreground,
+    .text-muted-foreground,
+    .border-border,
+    .bg-accent,
+    .text-accent-foreground,
+    .bg-primary,
+    .text-primary-foreground,
+    .bg-secondary,
+    .text-secondary-foreground,
+    .border,
+    .shadow {
+      transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow;
+      transition-duration: var(--transition-duration);
+      transition-timing-function: var(--transition-timing);
+    }
+    
+    :root {
+      /* Base colors */
+      --primary: 192 100% 37%; /* #0099BC */
+      --accent: 174 51% 50%;
+      --destructive: 0 84.2% 60.2%;
+      --ring: 174 51% 50%;
+      --radius: 0.5rem;
+      
+      /* Light theme (default) */
+      --background: 0 0% 100%;
+      --foreground: 223 30% 9%;
+      --card: 0 0% 100%;
+      --card-foreground: 223 30% 9%;
+      --popover: 0 0% 100%;
+      --popover-foreground: 223 30% 9%;
+      --primary-foreground: 0 0% 100%;
+      --secondary: 210 40% 96.1%;
+      --secondary-foreground: 223 30% 9%;
+      --muted: 210 40% 96.1%;
+      --muted-foreground: 223 30% 45%;
+      --accent-foreground: 0 0% 100%;
+      --destructive-foreground: 0 0% 100%;
+      --border: 223 30% 90%;
+      --input: 223 30% 90%;
+      --ring: 174 51% 50%;
+      
+      color-scheme: light;
+    }
+    
+    .dark {
+      --background: 223 30% 9%;
+      --foreground: 216 40% 95%;
+      --card: 223 30% 14%;
+      --card-foreground: 216 40% 95%;
+      --popover: 223 30% 9%;
+      --popover-foreground: 216 40% 95%;
+      --primary-foreground: 223 52% 10%;
+      --secondary: 223 30% 14%;
+      --secondary-foreground: 216 40% 95%;
+      --muted: 223 30% 14%;
+      --muted-foreground: 216 40% 95%;
+      --accent-foreground: 223 30% 10%;
+      --border: 223 30% 25%;
+      --input: 223 30% 25%;
+      color-scheme: dark;
+    }
+
+    /* Minimal token utility mappings to mimic the app's theme */
+    .bg-background { background-color: hsl(var(--background)); }
+    .text-foreground { color: hsl(var(--foreground)); }
+    .bg-secondary { background-color: hsl(var(--secondary)); }
+    .text-muted-foreground { color: hsl(var(--muted-foreground)); }
+    .text-primary { color: hsl(var(--primary)); }
+    .bg-primary { background-color: hsl(var(--primary)); }
+    .text-primary-foreground { color: hsl(var(--primary-foreground)); }
+    .text-foreground\/80 { color: hsl(var(--foreground) / 0.8); }
+    .border-border { border-color: hsl(var(--border)); }
+    .bg-background\/95 { background-color: hsl(var(--background) / 0.95); }
+    .bg-background\/80 { background-color: hsl(var(--background) / 0.80); }
+    .border-border\/40 { border-color: hsl(var(--border) / 0.40); }
+    .bg-primary\/10 { background-color: hsl(var(--primary) / 0.10); }
+    .bg-card { background-color: hsl(var(--card)); }
+    .text-accent { color: hsl(var(--accent)); }
+
+    html { scroll-behavior: smooth; }
+    body { 
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Enhanced button styles */
+    .btn { 
+      display: inline-flex; 
+      align-items: center; 
+      justify-content: center; 
+      border-radius: 0.5rem; 
+      padding: 0.75rem 1.5rem; 
+      font-size: 1rem; 
+      font-weight: 600; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary { 
+      background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent))); 
+      color: hsl(var(--primary-foreground)); 
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .btn-primary:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    .btn-outline { 
+      border: 2px solid hsl(var(--border)); 
+      color: hsl(var(--foreground)); 
+      background-color: transparent; 
+    }
+    .btn-outline:hover { 
+      background-color: hsl(var(--primary) / 0.1);
+      border-color: hsl(var(--primary));
+    }
+
+    /* Enhanced card styles */
+    .card { 
+      border-radius: 1rem; 
+      box-shadow: 0 4px 6px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.06); 
+      padding: 2rem; 
+      background-color: hsl(var(--card)); 
+      color: hsl(var(--card-foreground));
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid hsl(var(--border) / 0.5);
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Enhanced bento cards */
+    .bento-card {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      aspect-ratio: 1/1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .bento-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      border-radius: 1.25rem;
+    }
+    
+    .bento-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    
+    .bento-card:hover::before {
+      opacity: 1;
+    }
+    
+    .bento-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .bento-card {
+      perspective: 1000px;
+      transform-style: preserve-3d;
+    }
+    
+    .bento-card img {
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      height: 5rem;
+      width: auto;
+      margin-bottom: 1.25rem;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+      opacity: 0.95;
+      transform: translateZ(0);
+      will-change: transform, filter;
+    }
+    
+    .bento-card:hover img {
+      transform: translateZ(30px) scale(1.2) rotateY(8deg) rotateX(8deg);
+      opacity: 1;
+      filter: drop-shadow(0 12px 24px rgba(0,0,0,0.25)) brightness(1.15) saturate(1.2);
+    }
+    
+    .bento-card .bento-content {
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .bento-card:hover .bento-content {
+      transform: translateY(-8px);
+    }
+    
+    .bento-card h3 {
+      color: hsl(var(--foreground));
+      font-weight: 700;
+      font-size: 1.125rem;
+      margin-top: 0.75rem;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    .bento-card:hover h3 {
+      color: hsl(var(--primary));
+    }
+    
+    /* Snowflake rotation animation */
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .group:hover img[alt="SnowBase Studio logo"] {
+      animation: rotate 7s linear infinite;
+      transition: transform 0.3s ease-out;
+    }
+
+    /* Badge */
+    .badge { 
+      display: inline-flex; 
+      align-items: center; 
+      border-radius: 9999px; 
+      padding: 0.5rem 1rem; 
+      font-size: 0.875rem; 
+      font-weight: 600;
+      background-color: hsl(var(--secondary)); 
+      color: hsl(var(--foreground)); 
+      transition: all 0.3s ease;
+    }
+    .badge:hover {
+      transform: scale(1.05);
+      background-color: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
+    }
+
+    /* Backdrop blur helper */
+    .backdrop-blur { backdrop-filter: blur(12px); }
+
+    /* Hide utility for mobile menu */
+    .hidden { display: none; }
+
+    /* Enhanced animations */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 0.3; }
+    }
+    
+    @keyframes gradient-x {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .animate-pulse-slow {
+      animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    .animate-gradient-x {
+      background-size: 200% 200%;
+      animation: gradient-x 3s ease infinite;
+    }
+    
+    /* Falling snowflakes */
+    .snowflakes { 
+      position: fixed; 
+      inset: 0; 
+      pointer-events: none; 
+      overflow: hidden; 
+      z-index: 0;
+    }
+    /* Hide snow in tech stack section */
+    #technology-stack .snowflakes {
+      display: none;
+    }
+    .snowflake { position: absolute; top: -10%; color: hsl(var(--foreground) / 0.2); opacity: 0.8; will-change: transform; }
+    @keyframes snowfall {
+      0% { transform: translate3d(var(--x, 0), -10%, 0) rotate(0deg); }
+      100% { transform: translate3d(calc(var(--x, 0) + 0px), 110%, 0) rotate(360deg); }
+    }
+    /* Create variety */
+    .snowflake { animation: snowfall var(--dur, 15s) linear infinite; font-size: var(--size, 14px); left: var(--left, 50%); animation-delay: var(--delay, 0s); }
+    
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    /* Text selection styles */
+    html {
+      -webkit-tap-highlight-color: #00D7E6;
+    }
+    
+    /* Base selection styles */
+    ::selection {
+      background: #00D7E6;
+      color: #000;
+      text-shadow: none;
+    }
+    
+    /* Apply to all elements */
+    *,
+    *::selection,
+    *::-moz-selection,
+    *::-webkit-selection {
+      -webkit-tap-highlight-color: #00D7E6;
+    }
+    
+    /* Force selection color */
+    *::selection {
+      background: #00D7E6 !important;
+      color: #000 !important;
+      -webkit-text-fill-color: #000 !important;
+    }
+    
+    *::-moz-selection {
+      background: #00D7E6 !important;
+      color: #000 !important;
+    }
+    
+    *::-webkit-selection {
+      background: #00D7E6 !important;
+      color: #000 !important;
+      -webkit-text-fill-color: #000 !important;
+    }
+    
+    /* Decorative elements */
+    .decorative-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, hsl(var(--primary) / 0.2) 0%, transparent 70%);
+    }
+
+    /* Tech Stack Scrolling Styles */
+    .tech-scroll-container {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      padding: 3rem 0;
+      mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 20%,
+        #000 80%,
+        transparent
+      );
+    }
+
+    /* GitHub Theme-Based Icon Styles */
+    .github-icon-light {
+      fill: #1B1F23;
+    }
+
+    .dark .github-icon-dark {
+      fill: #ffffff;
+    }
+
+    .dark .github-icon-light {
+      display: none;
+    }
+
+    .github-icon-dark {
+      display: none;
+    }
+
+    .dark .github-icon-dark {
+      display: block;
+    }
+
+    .tech-scroll-track {
+      display: flex;
+      gap: 2rem;
+      width: fit-content;
+      animation: scroll 240s linear infinite;
+      padding: 0 2rem;
+      margin-left: 0;
+    }
+
+    .tech-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 2rem;
+      min-width: 120px;
+      gap: 0.75rem;
+    }
+
+    .tech-item img {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 0.75rem;
+      object-fit: contain;
+      transition: filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      filter: grayscale(30%);
+    }
+
+    .tech-item span {
+      color: white;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-100% - 2rem));
+      }
+    }
+
+  </style>
+  <style>
+    /* Technology Stack Section */
+    .tech-scroll-container {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      padding: 2rem 0;
+      mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 20%,
+        #000 80%,
+        transparent
+      );
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 20%,
+        #000 80%,
+        transparent
+      );
+    }
+    
+    .tech-scroll-track {
+      display: flex;
+      gap: 2rem;
+      padding: 1rem 0;
+      width: max-content;
+      will-change: transform;
+    }
+    
+    .tech-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 140px;
+      padding: 1.5rem 1rem;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 0.75rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .tech-item:hover {
+      transform: scale(1.1) translateY(-2px);
+      z-index: 10;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.8);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .tech-item img {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 0.75rem;
+      transition: all 0.3s ease;
+      filter: grayscale(30%);
+    }
+    
+    .tech-item:hover img {
+      filter: grayscale(0%) brightness(1.1);
+    }
+    
+    .tech-item span {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--foreground);
+      transition: color 0.3s ease;
+    }
+    
+    .tech-item:hover span {
+      color: var(--primary);
+    }
+
+  </style>
+  <style>
+    /* FAQ Styles */
+    details > summary {
+      list-style: none;
+    }
+    
+    details > summary::-webkit-details-marker {
+      display: none;
+    }
+    
+    details[open] > summary {
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Removed arrow rotation effect */
+    
+    /* Particle styles */
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    /* Adjust z-index of main content */
+    main {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-background text-foreground antialiased transition-colors duration-300 flex flex-col">
+  <!-- Snow Canvas -->
+  <canvas id="snow" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
+  
+  <!-- Wrapper to push footer down -->
+  <div class="flex flex-col min-h-screen">
+    <!-- Header -->
+    <header id="site-header" class="sticky top-0 z-50 w-full border-b border-border/40 bg-black text-white">
+    <div class="container mx-auto flex h-16 items-center justify-between px-4">
+      <a href="#home" class="flex items-center gap-2 group">
+        <img src="logo.png" alt="SnowBase Studio logo" class="h-8 w-auto transition-transform duration-300 group-hover:rotate-12" />
+        <span class="text-xl font-bold">
+          <span class="gradient-text">SnowBase</span><span class="text-foreground">Studio</span>
+        </span>
+      </a>
+
+      <!-- Navigation removed -->
+      <div class="flex items-center gap-6">
+        <a href="mailto:hi@snowbasestudio.com" class="hidden md:inline-flex items-center text-sm font-medium text-white hover:text-gray-300 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          hi@snowbasestudio.com
+        </a>
+        <div class="flex-1"></div> <!-- Spacer to push theme toggle to right -->
+      </div>
+    </div>
+    <!-- Mobile Nav Removed -->
+    </header>
+    
+    <div class="flex-grow">
+    <main class="relative z-10">
+    <!-- Hero -->
+    <section id="home" class="relative overflow-hidden w-full bg-black text-white min-h-screen flex flex-col justify-center">
+      <div class="absolute inset-0 z-0">
+        <img src="https://cdn.gamma.app/0q3kwkx42ofh0ga/de03a4e2d0e24e8887ac7cc611b5fe86/original/Gemini_Generated_Image_hzjzb8hzjzb8hzjz.png" class="w-full h-full object-cover opacity-100" alt="AI Technology Background">
+        <div class="absolute inset-0 bg-black/50"></div>
+      </div>
+      <div class="relative z-10 flex-1 flex flex-col justify-start pt-20 pb-20 px-4">
+        <div class="w-full max-w-4xl mx-auto relative">
+          <div class="container mx-auto text-center mb-8">
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8">
+              Give your business the website it deserves
+            </h1>
+          </div>
+          <div class="max-w-4xl mx-auto relative">
+            <!-- Left Arrow -->
+            <button id="prevCard" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 text-white/60 hover:text-white transition-colors flex items-center justify-center h-16 w-16 z-10 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-white/30" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12">
+                <path d="m15 18-6-6 6-6"/>
+              </svg>
+            </button>
+            
+            <!-- Carousel Container -->
+            <div id="cardCarousel" class="relative overflow-hidden w-full">
+              <!-- Cards will be added here by JavaScript -->
+            </div>
+            
+            <!-- Right Arrow -->
+            <button id="nextCard" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 text-white/60 hover:text-white transition-colors flex items-center justify-center h-16 w-16 z-10 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-white/30">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12">
+                <path d="m9 18 6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
+          
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              const carousel = document.getElementById('cardCarousel');
+              const prevBtn = document.getElementById('prevCard');
+              const nextBtn = document.getElementById('nextCard');
+              let currentIndex = 0;
+              
+              // Card data
+              const cards = [
+                {
+                  title: 'SnowBase Studio',
+                  description: 'Crafting exceptional digital experiences with cutting-edge technology and innovative design solutions.',
+                  buttonText: 'Discover More',
+                  imageUrl: 'https://cdn.gamma.app/0q3kwkx42ofh0ga/20fbefb067514d6daff99a772c51ba12/original/Gemini_Generated_Image_mn37r5mn37r5mn37.png',
+                  buttonLink: '#'
+                },
+                {
+                  title: 'Quality Websites That Don\'t Break The Bank',
+                  description: 'Professional, responsive websites at affordable prices. We believe great web design should be accessible to every business, without compromising on quality or performance.',
+                  buttonText: 'View Pricing',
+                  imageUrl: 'https://cdn.gamma.app/0q3kwkx42ofh0ga/fb3d1ea27f18463c9ee9835ca80b8015/original/Gemini_Generated_Image_jv2prujv2prujv2p.png',
+                  buttonLink: '#'
+                },
+                {
+                  title: 'Web Design',
+                  description: 'Professional web design services to elevate your online presence and engage your audience with stunning, responsive websites.',
+                  buttonText: 'View Portfolio',
+                  buttonLink: '#portfolio',
+                  imageUrl: 'https://cdn.gamma.app/0q3kwkx42ofh0ga/6d9ef51b2f8f4e8484be7dd47c042866/original/Gemini_Generated_Image_cd04p1cd04p1cd04.png'
+                }
+              ];
+              
+              // Initialize carousel
+              function initCarousel() {
+                updateCarousel();
+                updateButtons();
+              }
+              
+              // Update carousel display
+              function updateCarousel() {
+                carousel.innerHTML = `
+                  <div class="bg-black/50 backdrop-blur-sm rounded-2xl grid md:grid-cols-2 items-center overflow-hidden border border-zinc-800 transition-all duration-500">
+                    <div class="p-6 md:p-8 text-left">
+                      <h2 class="text-2xl md:text-3xl font-bold mb-3">${cards[currentIndex].title}</h2>
+                      <p class="text-base text-zinc-400">
+                        ${cards[currentIndex].description}
+                      </p>
+                    </div>
+                    <div class="h-48 md:h-full">
+                      <img src="${cards[currentIndex].imageUrl}" alt="${cards[currentIndex].title}" class="w-full h-full object-cover">
+                    </div>
+                  </div>
+                `;
+              }
+              
+              // Update button states
+              function updateButtons() {
+                const isFirst = currentIndex === 0;
+                const isLast = currentIndex === cards.length - 1;
+                
+                prevBtn.disabled = isFirst;
+                nextBtn.disabled = isLast;
+                
+                // Update button styles based on disabled state
+                if (isFirst) {
+                  prevBtn.classList.add('opacity-30', 'cursor-not-allowed');
+                  prevBtn.classList.remove('hover:text-white');
+                } else {
+                  prevBtn.classList.remove('opacity-30', 'cursor-not-allowed');
+                  prevBtn.classList.add('hover:text-white');
+                }
+                
+                if (isLast) {
+                  nextBtn.classList.add('opacity-30', 'cursor-not-allowed');
+                  nextBtn.classList.remove('hover:text-white');
+                } else {
+                  nextBtn.classList.remove('opacity-30', 'cursor-not-allowed');
+                  nextBtn.classList.add('hover:text-white');
+                }
+              }
+              
+              // Event listeners
+              prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                  currentIndex--;
+                  updateCarousel();
+                  updateButtons();
+                }
+              });
+              
+              nextBtn.addEventListener('click', () => {
+                if (currentIndex < cards.length - 1) {
+                  currentIndex++;
+                  updateCarousel();
+                  updateButtons();
+                }
+              });
+              
+              // Initialize
+              initCarousel();
+            });
+          </script>
+          
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="w-full pt-32 pb-16 md:pb-24 relative overflow-hidden">
+      <div class="absolute inset-0 -z-10 w-full h-full">
+        <img 
+          src="https://cdn.gamma.app/0q3kwkx42ofh0ga/cb2fe9abe7ea45ef984898dafaa92be0/original/Gemini_Generated_Image_fvqsclfvqsclfvqs.png" 
+          alt="Background pattern" 
+          class="w-full h-full object-cover"
+        >
+        <div class="absolute inset-0 bg-black/50"></div>
+      </div>
+      <div class="container mx-auto px-4 relative">
+        <div class="mx-auto max-w-4xl text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-foreground">
+            Our Web Development Services
+          </h2>
+          <p class="text-lg text-muted-foreground max-w-3xl mx-auto">
+            We create stunning, high-performance websites that help your business stand out and grow online.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <!-- Web Strategy -->
+          <div class="bg-black/50 backdrop-blur-sm rounded-xl text-center p-8 group hover:shadow-lg transition-all duration-300 h-full border border-zinc-800">
+            <div class="mx-auto rounded-full bg-primary/10 p-4 w-fit transition-all duration-300 group-hover:bg-primary/20">
+              <i data-lucide="lightbulb" class="h-6 w-6 text-primary"></i>
+            </div>
+            <h3 class="mt-6 text-xl font-bold group-hover:text-primary transition-colors">Web Strategy</h3>
+            <p class="mt-4 text-muted-foreground">Data-driven approach to create a clear roadmap for your online presence and business goals.</p>
+          </div>
+
+          <!-- Web Design -->
+          <div class="bg-black/50 backdrop-blur-sm rounded-xl text-center p-8 group hover:shadow-lg transition-all duration-300 h-full border border-zinc-800">
+            <div class="mx-auto rounded-full bg-primary/10 p-4 w-fit transition-all duration-300 group-hover:bg-primary/20">
+              <i data-lucide="layout" class="h-6 w-6 text-primary"></i>
+            </div>
+            <h3 class="mt-6 text-xl font-bold group-hover:text-primary transition-colors">Web Design</h3>
+            <p class="mt-4 text-muted-foreground">Stunning, responsive designs that work beautifully across all devices and create memorable brand experiences.</p>
+          </div>
+
+          <!-- Development -->
+          <div class="bg-black/50 backdrop-blur-sm rounded-xl text-center p-8 group hover:shadow-lg transition-all duration-300 h-full border border-zinc-800">
+            <div class="mx-auto rounded-full bg-primary/10 p-4 w-fit transition-all duration-300 group-hover:bg-primary/20">
+              <i data-lucide="code-2" class="h-6 w-6 text-primary"></i>
+            </div>
+            <h3 class="mt-6 text-xl font-bold group-hover:text-primary transition-colors">Development</h3>
+            <p class="mt-4 text-muted-foreground">Custom-built websites using the latest technologies for speed, security, and seamless user experiences.</p>
+          </div>
+        </div>
+  </div>
+</section>
+
+<!-- Technology Stack Section -->
+<section id="technology-stack" class="w-full relative py-16 md:py-24 overflow-hidden">
+  <div class="absolute inset-0 -z-10">
+    <img 
+      src="https://cdn.gamma.app/0q3kwkx42ofh0ga/5acb1bbf8880449aaa1c62d6d57a4a29/original/Gemini_Generated_Image_257zir257zir257z.png" 
+      class="w-full h-full object-cover"
+      alt="Technology background"
+    >
+    <div class="absolute inset-0 bg-black/50"></div>
+  </div>
+  <div class="container mx-auto px-4 relative">
+    <div class="mx-auto max-w-4xl text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4 text-foreground">Our Technology Stack</h2>
+      <p class="text-lg text-muted-foreground max-w-3xl mx-auto">
+        We work with industry-leading technologies to deliver cutting-edge solutions.
+      </p>
+    </div>
+  </div>
+
+  <div class="relative overflow-hidden">
+    <!-- Scrolling container -->
+    <div class="tech-scroll-container">
+      <div class="tech-scroll-track">
+        <!-- First set of items (group 1) -->
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" loading="lazy">
+          <span>Python</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" loading="lazy">
+          <span>React</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" loading="lazy">
+          <span>Next.js</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" loading="lazy">
+          <span>TypeScript</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" loading="lazy">
+          <span>HTML5</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" loading="lazy">
+          <span>Node.js</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg" alt="Supabase" loading="lazy">
+          <span>Supabase</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.gamma.app/0q3kwkx42ofh0ga/c12efcb2f7f845c497224b2bd1130ade/original/neon-logo.png.png" alt="Neon" loading="lazy" class="h-10 w-auto">
+          <span>Neon</span>
+        </div>
+
+        <!-- Second set of items (group 2) -->
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL" loading="lazy">
+          <span>SQL</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS" loading="lazy">
+          <span>Tailwind CSS</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" loading="lazy">
+          <span>JavaScript</span>
+        </div>
+        <div class="tech-item">
+          <svg width="56" height="56" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="github-icon-light">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" fill="#1B1F23"/>
+          </svg>
+          <svg width="56" height="56" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="github-icon-dark">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" fill="#ffff"/>
+          </svg>
+          <span>GitHub</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" loading="lazy">
+          <span>CSS3</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" loading="lazy">
+          <span>Figma</span>
+        </div>
+
+        <!-- Duplicate group 1 for seamless looping -->
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" loading="lazy">
+          <span>Python</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" loading="lazy">
+          <span>React</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" loading="lazy">
+          <span>Next.js</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" loading="lazy">
+          <span>TypeScript</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" loading="lazy">
+          <span>HTML5</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" loading="lazy">
+          <span>Node.js</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg" alt="Supabase" loading="lazy">
+          <span>Supabase</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.gamma.app/0q3kwkx42ofh0ga/c12efcb2f7f845c497224b2bd1130ade/original/neon-logo.png.png" alt="Neon" loading="lazy" class="h-10 w-auto">
+          <span>Neon</span>
+        </div>
+
+        <!-- Duplicate group 2 for seamless looping -->
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL" loading="lazy">
+          <span>SQL</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS" loading="lazy">
+          <span>Tailwind CSS</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" loading="lazy">
+          <span>JavaScript</span>
+        </div>
+        <div class="tech-item">
+          <svg width="56" height="56" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="github-icon-light">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" fill="#1B1F23"/>
+          </svg>
+          <svg width="56" height="56" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="github-icon-dark">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" fill="#ffff"/>
+          </svg>
+          <span>GitHub</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" loading="lazy">
+          <span>CSS3</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" loading="lazy">
+          <span>Figma</span>
+        </div>
+
+        <!-- Third set - additional duplicate for 3 cycles -->
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" loading="lazy">
+          <span>Python</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" loading="lazy">
+          <span>React</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" loading="lazy">
+          <span>Next.js</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" loading="lazy">
+          <span>TypeScript</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" loading="lazy">
+          <span>HTML5</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" loading="lazy">
+          <span>Node.js</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg" alt="Supabase" loading="lazy">
+          <span>Supabase</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.gamma.app/0q3kwkx42ofh0ga/c12efcb2f7f845c497224b2bd1130ade/original/neon-logo.png.png" alt="Neon" loading="lazy" class="h-10 w-auto">
+          <span>Neon</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL" loading="lazy">
+          <span>SQL</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS" loading="lazy">
+          <span>Tailwind CSS</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" loading="lazy">
+          <span>JavaScript</span>
+        </div>
+        <div class="tech-item">
+          <svg width="56" height="56" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="github-icon-light">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" fill="#1B1F23"/>
+          </svg>
+          <svg width="56" height="56" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="github-icon-dark">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" fill="#ffff"/>
+          </svg>
+          <span>GitHub</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" loading="lazy">
+          <span>CSS3</span>
+        </div>
+        <div class="tech-item">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" loading="lazy">
+          <span>Figma</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="relative text-white py-24 overflow-hidden">
+      <!-- Background Image -->
+      <div class="absolute inset-0 -z-10">
+        <img src="https://cdn.gamma.app/0q3kwkx42ofh0ga/4bef39b5de1641538c0edbaecabcd9a4/original/Gemini_Generated_Image_2fj85r2fj85r2fj8.png" 
+             alt="Contact section background" 
+             class="w-full h-full object-cover opacity-50 scale-x-[-1] transition-transform duration-700 ease-in-out hover:scale-105">
+        <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/80"></div>
+      </div>
+      
+      <div class="container mx-auto px-4 max-w-6xl relative z-10">
+        <div class="text-center mb-16">
+          <span class="inline-block text-blue-400 font-medium mb-3 tracking-wider">CONTACT US</span>
+          <h2 class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">Let's Build Something Amazing</h2>
+          <p class="text-gray-300 max-w-2xl mx-auto text-lg leading-relaxed">Have a project in mind or want to discuss how we can help? We'd love to hear from you!</p>
+        </div>
+        
+        <div class="max-w-4xl mx-auto bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
+          <div class="grid grid-cols-1 lg:grid-cols-2">
+            <!-- Contact Info -->
+            <div class="p-10 bg-gradient-to-br from-blue-900/30 to-cyan-900/30">
+              <div class="mb-8">
+                <h3 class="text-2xl font-bold mb-6">
+                  Get in Touch
+                </h3>
+                <p class="text-gray-300 mb-8 leading-relaxed">
+                  Ready to start your next project? Have questions about our services? 
+                  Reach out to us and our team will get back to you within 24 hours.
+                </p>
+                
+                <div class="space-y-6">
+                  <div class="flex items-start group">
+                    <div class="flex-shrink-0 mt-1">
+                      <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="ml-4">
+                      <p class="text-sm text-gray-400 font-medium">Email us at</p>
+                      <a href="mailto:hi@snowbasestudio.com" class="text-white hover:text-blue-400 transition-colors font-medium text-lg">hi@snowbasestudio.com</a>
+                    </div>
+                  </div>
+                  
+                  <div class="flex items-start group">
+                    <div class="flex-shrink-0 mt-1">
+                      <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
+                        <svg height="20" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="20" data-view-component="true" class="text-blue-400">
+                          <path fill="currentColor" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="ml-4">
+                      <p class="text-sm text-gray-400 font-medium">GitHub</p>
+                      <a href="https://github.com/Snowbase-Studio" target="_blank" rel="noopener noreferrer" class="text-white hover:text-blue-400 transition-colors font-medium text-lg">github.com/Snowbase-Studio</a>
+                    </div>
+                  </div>
+                  
+                </div>
+                
+              </div>
+            
+            </div>
+            
+            <!-- Right Side Image -->
+            <div class="relative hidden lg:block">
+              <img 
+                src="https://cdn.gamma.app/0q3kwkx42ofh0ga/7c5bfb3a4e6a4cd892e76df1f96a301a/original/Gemini_Generated_Image_2uygxh2uygxh2uyg.png" 
+                alt="Contact us illustration"
+                class="w-full h-full object-cover"
+                loading="lazy"
+              >
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+  </div> <!-- End of flex-col min-h-screen -->
+  
+  <script>
+    // Smooth infinite scroll for technology stack
+    function initInfiniteScroll() {
+      const container = document.querySelector('.tech-scroll-container');
+      const track = document.querySelector('.tech-scroll-track');
+      if (!track || !container) return;
+      
+      // Get all tech items
+      const items = Array.from(track.children);
+      if (items.length === 0) return;
+      
+      // Animation variables
+      let animationId;
+      let position = 0;
+      const speed = 1; // Adjust speed as needed
+      let itemWidth = 0;
+      let trackWidth = 0;
+      
+      // Calculate dimensions
+      function updateDimensions() {
+        if (items.length > 0) {
+          // Get width of a single item including gap
+          itemWidth = items[0].offsetWidth + parseFloat(getComputedStyle(track).gap || '2rem');
+          // Calculate total width of all items
+          trackWidth = items.length * itemWidth;
+          
+          // Set track width to double the content width for seamless looping
+          track.style.width = `${trackWidth * 2}px`;
+          
+          // Clone items for seamless looping
+          if (track.children.length === items.length) {
+            items.forEach(item => {
+              const clone = item.cloneNode(true);
+              track.appendChild(clone);
+            });
+          }
+        }
+      }
+      
+      // Initial dimensions setup
+      updateDimensions();
+      
+      // Handle window resize
+      const resizeObserver = new ResizeObserver(() => {
+        updateDimensions();
+      });
+      resizeObserver.observe(container);
+      
+      // Animation loop
+      function animate() {
+        // Update position
+        position -= speed;
+        
+        // Reset position when we've scrolled one full track width
+        if (position <= -trackWidth) {
+          position = 0;
+        }
+        
+        // Apply the transform
+        track.style.transform = `translateX(${position}px)`;
+        
+        // Continue the animation
+        animationId = requestAnimationFrame(animate);
+      }
+      
+      // Start the animation
+      animationId = requestAnimationFrame(animate);
+      
+      // Pause on hover
+      container.addEventListener('mouseenter', () => {
+        cancelAnimationFrame(animationId);
+      });
+      
+      container.addEventListener('mouseleave', () => {
+        animationId = requestAnimationFrame(animate);
+      });
+      
+      // Handle window resize
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          updateDimensions();
+        }, 250);
+      });
+      
+      // Cleanup on page unload
+      return () => {
+        cancelAnimationFrame(animationId);
+        container.removeEventListener('mouseenter', () => {});
+        container.removeEventListener('mouseleave', () => {});
+        window.removeEventListener('resize', () => {});
+        resizeObserver.disconnect();
+      };
+    }
+    
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize infinite scroll
+      initInfiniteScroll();
+      const menuBtn = document.getElementById('menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close menu when clicking on menu items
+        const menuItems = mobileMenu.querySelectorAll('[data-close-menu]');
+        menuItems.forEach(item => {
+          item.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+          });
+        });
+      }
+    });
+
+  </script>
+  
+  <style>
+    
+    /* Reduce motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      canvas#snow {
+        display: none;
+      }
+      
+      .animate-float,
+      .animate-pulse-slow {
+        animation: none;
+      }
+    }
+    
+    /* Animation delays */
+    .animation-delay-1000 {
+      animation-delay: 1s;
+    }
+    
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+  </style>
+  
+  <!-- Theme Toggle Script -->
+  <!-- Particles.js library -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  
+  <script>
+    // Theme toggle, particles initialization, and FAQ functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // FAQ Functionality
+      const faqCategories = document.querySelectorAll('.faq-category');
+      const faqItems = document.querySelectorAll('.faq-item');
+      
+      // Toggle FAQ category
+      faqCategories.forEach(category => {
+        const header = category.querySelector('.faq-category-header');
+        header.addEventListener('click', () => {
+          category.classList.toggle('active');
+        });
+      });
+      
+      // Toggle FAQ item
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+          // Close other items in the same category
+          const parentCategory = item.closest('.faq-category');
+          const allItemsInCategory = parentCategory.querySelectorAll('.faq-item');
+          allItemsInCategory.forEach(i => {
+            if (i !== item) i.classList.remove('active');
+          });
+          
+          // Toggle current item
+          item.classList.toggle('active');
+        });
+      });
+      
+      // Don't open any category by default
+      // Previously opened first category by default, now removed
+      // Initialize particles
+      function initParticles() {
+        if (typeof particlesJS !== 'undefined') {
+          const isDark = document.documentElement.classList.contains('dark');
+          const particleColor = isDark ? '#ffffff' : '#00D7E6';
+          
+          particlesJS('particles-js', {
+            particles: {
+              number: { 
+                value: 80,
+                density: { 
+                  enable: true, 
+                  value_area: 1000 
+                }
+              },
+              color: { 
+                value: particleColor 
+              },
+              shape: { 
+                type: 'circle' 
+              },
+              opacity: {
+                value: 0.8,
+                random: true,
+                anim: { 
+                  enable: true, 
+                  speed: 0.5, 
+                  opacity_min: 0.1, 
+                  sync: false 
+                }
+              },
+              size: {
+                value: 2.5,
+                random: true,
+                anim: { 
+                  enable: true, 
+                  speed: 1, 
+                  size_min: 0.5, 
+                  sync: false 
+                }
+              },
+              line_linked: {
+                enable: false  // Remove connecting lines
+              },
+              move: {
+                enable: true,
+                speed: 0.5,  // Slower movement
+                direction: 'bottom',  // Move down like snow
+                random: true,
+                straight: false,
+                out_mode: 'out',
+                bounce: false
+              }
+            },
+            interactivity: {
+              detect_on: 'window',
+              events: {
+                onhover: { 
+                  enable: true, 
+                  mode: 'repulse'  // Gently push particles away on hover
+                },
+                onclick: { 
+                  enable: false  // Disable click interaction
+                },
+                resize: true
+              },
+              modes: {
+                repulse: { 
+                  distance: 50,  // Shorter repulsion distance
+                  duration: 0.4  // Slower repulsion
+                }
+              }
+            },
+            retina_detect: true
+          });
+        }
+      }
+      
+      // Initialize particles on load
+      initParticles();
+
+      // Theme initialization is now handled in the main script
+
+      // Initialize Lucide icons
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+
+      // Simple FAQ functionality
+      const faqButtons = document.querySelectorAll('.faq-simple-btn');
+      faqButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const answer = this.nextElementSibling;
+          const toggle = this.querySelector('.faq-simple-toggle');
+
+          // Close other answers
+          document.querySelectorAll('.faq-simple-answer').forEach(ans => {
+            if (ans !== answer) {
+              ans.classList.add('hidden');
+              ans.previousElementSibling.querySelector('.faq-simple-toggle').style.transform = 'rotate(0deg)';
+            }
+          });
+
+          // Toggle this answer
+          answer.classList.toggle('hidden');
+
+          // Rotate the toggle arrow
+          if (answer.classList.contains('hidden')) {
+            toggle.style.transform = 'rotate(0deg)';
+          } else {
+            toggle.style.transform = 'rotate(180deg)';
+          }
+        });
+      });
+
+    });
+  </script>
+</body>
+</html>
