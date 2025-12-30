@@ -1,0 +1,23 @@
+import type { Metadata } from "next";
+import "./globals.css";
+import { Toaster } from "sonner";
+
+export const metadata: Metadata = {
+  title: "21Labs",
+  description: "Professional web development agency creating stunning, high-performance websites. Transform your ideas into digital reality with our expert team.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className="antialiased">
+        {children}
+        <Toaster position="bottom-right" closeButton />
+      </body>
+    </html>
+  );
+}
