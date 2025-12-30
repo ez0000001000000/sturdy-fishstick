@@ -17,27 +17,25 @@ interface Article {
 
 const FEATURED_ARTICLES: Article[] = [
   {
-    date: "Aug 18, 2025",
-    title: "Embracing Remote Work Culture",
+    date: "Dec 30, 2025",
+    title: "Best AI App Builders in 2025",
     description:
-      "Explore the transformative shift towards remote work and how it has reshaped business operations globally. Discover strategies for effective communication, collaboration, and productivity in a remote work environment.",
+      "Discover the top AI-powered app builders that are revolutionizing web development. From no-code platforms to advanced AI assistants, explore tools that can help you build applications faster and more efficiently.",
     image:
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/f9bcb133-3af6-4d94-8a70-da91f34b1766-pro-tailark-com/assets/images/images_2.png",
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=800&fit=crop",
     authors: [
-      { name: "Shadcn", avatar: "https://avatars.githubusercontent.com/u/124599?v=4" },
-      { name: "Meschac Irung", avatar: "https://avatars.githubusercontent.com/u/47919550?v=4" },
+      { name: "ez0000001000000", avatar: "https://avatars.githubusercontent.com/u/207921092?v=4" },
     ],
   },
   {
-    date: "Sep 10, 2025",
-    title: "The Top Industries and Business Models Using AI for Fraud Prevention and Detection",
+    date: "Dec 25, 2025",
+    title: "Modern Web Development Trends",
     description:
-      "Discover how various industries leverage AI tools to enhance fraud prevention and detection. Gain insights into the leading sectors and business models adopting AI technologies and learn about the effectiveness of these approaches.",
+      "Explore the latest trends shaping web development in 2025. From AI integration to new frameworks, understand what's driving innovation in the web development landscape.",
     image:
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/f9bcb133-3af6-4d94-8a70-da91f34b1766-pro-tailark-com/assets/images/images_1.png",
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=800&fit=crop",
     authors: [
-      { name: "Theo Balick", avatar: "https://avatars.githubusercontent.com/u/68236786?v=4" },
-      { name: "Méschac Irung", avatar: "https://avatars.githubusercontent.com/u/47919550?v=4" },
+      { name: "ez0000001000000", avatar: "https://avatars.githubusercontent.com/u/207921092?v=4" },
     ],
   },
 ];

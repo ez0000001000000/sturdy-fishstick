@@ -99,23 +99,39 @@ const FeaturedPostCard = ({ date, title, description, image, authors }: PostProp
 const FeaturedPosts = () => {
   const posts = [
     {
-      date: "Aug 18, 2025",
-      title: "Embracing Remote Work Culture",
-      description: "Explore the transformative shift towards remote work and how it has reshaped business operations globally. Discover strategies for effective communication, collaboration, and productivity in a remote work environment.",
-      image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/f9bcb133-3af6-4d94-8a70-da91f34b1766-pro-tailark-com/assets/images/images_2.png",
+      date: "Dec 30, 2025",
+      title: "Best AI App Builders in 2025",
+      description: "Discover the top AI-powered app builders that are revolutionizing web development. From no-code platforms to advanced AI assistants, explore tools that can help you build applications faster and more efficiently.",
+      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=800&fit=crop",
       authors: [
-        { name: "Shadcn", avatar: "https://avatars.githubusercontent.com/u/124599?v=4" },
-        { name: "Meschac Irung", avatar: "https://avatars.githubusercontent.com/u/47919550?v=4" }
+        { name: "ez0000001000000", avatar: "https://avatars.githubusercontent.com/u/207921092?v=4" }
       ]
     },
     {
-      date: "Sep 10, 2025",
-      title: "The Top Industries and Business Models Using AI for Fraud Prevention and Detection",
-      description: "Discover how various industries leverage AI tools to enhance fraud prevention and detection. Gain insights into the leading sectors and business models adopting AI technologies and learn about the effectiveness of these approaches.",
-      image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/f9bcb133-3af6-4d94-8a70-da91f34b1766-pro-tailark-com/assets/images/images_1.png",
+      date: "Dec 25, 2025", 
+      title: "Modern Web Development Trends",
+      description: "Explore the latest trends shaping web development in 2025. From AI integration to new frameworks, understand what's driving innovation in the web development landscape.",
+      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=800&fit=crop",
       authors: [
-        { name: "Theo Balick", avatar: "https://avatars.githubusercontent.com/u/68236786?v=4" },
-        { name: "Méschac Irung", avatar: "https://avatars.githubusercontent.com/u/47919550?v=4" }
+        { name: "ez0000001000000", avatar: "https://avatars.githubusercontent.com/u/207921092?v=4" }
+      ]
+    },
+    {
+      date: "Dec 20, 2025",
+      title: "Building Scalable Web Applications",
+      description: "Learn the best practices for creating web applications that can scale with your business. From architecture choices to deployment strategies, ensure your app is ready for growth.",
+      image: "https://images.unsplash.com/photo-1558494949-ef010cbcc31c?w=800&h=800&fit=crop",
+      authors: [
+        { name: "ez0000001000000", avatar: "https://avatars.githubusercontent.com/u/207921092?v=4" }
+      ]
+    },
+    {
+      date: "Dec 15, 2025",
+      title: "The Future of E-commerce Development",
+      description: "Discover how emerging technologies are transforming e-commerce platforms. From AI-powered recommendations to blockchain integration, see what's next for online stores.",
+      image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=800&fit=crop",
+      authors: [
+        { name: "ez0000001000000", avatar: "https://avatars.githubusercontent.com/u/207921092?v=4" }
       ]
     }
   ];
@@ -128,7 +144,7 @@ const FeaturedPosts = () => {
           <div className="max-w-md mb-12">
             <span className="text-muted-foreground text-[14px]">Blog</span>
             <h2 className="text-muted-foreground mt-4 text-balance text-[36px] font-semibold leading-tight">
-              News, insights and more from <strong className="text-foreground font-semibold">Tailark Quartz</strong>
+              News, insights and more from <strong className="text-foreground font-semibold">21Labs</strong>
             </h2>
           </div>
 
