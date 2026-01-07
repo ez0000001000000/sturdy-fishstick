@@ -15,157 +15,29 @@ interface Article {
   description: string;
   authors: Author[];
   href: string;
+  image: string;
 }
 
 const articles: Article[] = [
   {
-    date: "Oct 5, 2025",
-    title: "Cutting-Edge Innovations in Data Analytics",
-    description: "Learn about the latest trends in data analytics and how they can drive business growth.",
+    date: "Jan 2, 2025",
+    title: "Best Advanced Component Libraries in 2025",
+    description: "Discover the top advanced component libraries that are revolutionizing React development. From Aceternity UI to Magic UI, explore tools that will make your applications stand out.",
     authors: [
-      { name: "Shadcn", avatar: "https://avatars.githubusercontent.com/u/124599?v=4" },
-      { name: "Meschac Irung", avatar: "https://avatars.githubusercontent.com/u/47919550?v=4" },
+      { name: "ez0000001000000", avatar: "https://avatars.githubusercontent.com/u/207921092?v=4" },
     ],
-    href: "#",
+    href: "/blog/posts/best-advanced-component-libraries-2025",
+    image: "https://cdn.gamma.app/0q3kwkx42ofh0ga/415cea3f46a345b0b1e7f22c383c3e7b/original/Blog-2.jpg",
   },
   {
-    date: "Oct 15, 2025",
-    title: "Advancements in Cybersecurity Technologies",
-    description: "Discover new technologies protecting businesses from digital threats.",
+    date: "Dec 30, 2025",
+    title: "Best AI App Builders in 2025",
+    description: "Discover the top AI-powered app builders that are revolutionizing web development. From no-code platforms to advanced AI assistants, explore tools that can help you build applications faster and more efficiently.",
     authors: [
-      { name: "Meschac Irung", avatar: "https://avatars.githubusercontent.com/u/47919550?v=4" },
+      { name: "ez0000001000000", avatar: "https://avatars.githubusercontent.com/u/207921092?v=4" },
     ],
-    href: "#",
-  },
-  {
-    date: "Nov 1, 2025",
-    title: "The Role of Blockchain in Modern Finance",
-    description: "Understand how blockchain is reshaping the financial landscape.",
-    authors: [
-      { name: "Theo Balick", avatar: "https://avatars.githubusercontent.com/u/68236786?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Nov 10, 2025",
-    title: "Sustainability in Tech: A Growing Focus",
-    description: "Explore efforts towards sustainable practices in technology.",
-    authors: [
-      { name: "Shadcn", avatar: "https://avatars.githubusercontent.com/u/124599?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Dec 5, 2025",
-    title: "Big Data as a Strategic Asset",
-    description: "See how big data analytics can unlock new opportunities.",
-    authors: [
-      { name: "Bernard Ngandu", avatar: "https://avatars.githubusercontent.com/u/31113941?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Dec 5, 2025",
-    title: "The Future of Business with Big Data",
-    description: "See how big data analytics can unlock new opportunities.",
-    authors: [
-      { name: "Glodie Lukose", avatar: "https://avatars.githubusercontent.com/u/99137927?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Dec 5, 2025",
-    title: "Turning Data into Business Growth",
-    description: "See how big data analytics can unlock new opportunities insights and more from.",
-    authors: [
-      { name: "Bernard Ngandu", avatar: "https://avatars.githubusercontent.com/u/31113941?v=4" },
-      { name: "Shadcn", avatar: "https://avatars.githubusercontent.com/u/124599?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Aug 18, 2025",
-    title: "Building a Strong Remote Work Culture",
-    description: "Uncover the benefits and challenges of adopting a remote work culture in modern businesses.",
-    authors: [
-      { name: "Meschac Irung", avatar: "https://avatars.githubusercontent.com/u/47919550?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Sep 10, 2025",
-    title: "The Transformative Future of AI in Digital Marketing",
-    description: "Explore the potential of AI to revolutionize marketing strategies and customer engagement.",
-    authors: [
-      { name: "Theo Balick", avatar: "https://avatars.githubusercontent.com/u/68236786?v=4" },
-      { name: "Méschac Irung", avatar: "https://avatars.githubusercontent.com/u/47919550?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Oct 5, 2025",
-    title: "Emerging Trends in Data Analytics",
-    description: "Learn about the latest trends in data analytics and how they can drive business growth.",
-    authors: [
-      { name: "Shadcn", avatar: "https://avatars.githubusercontent.com/u/124599?v=4" },
-      { name: "Meschac Irung", avatar: "https://avatars.githubusercontent.com/u/47919550?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Oct 15, 2025",
-    title: "Next-Gen Cybersecurity Solutions",
-    description: "Discover new technologies protecting businesses from digital threats.",
-    authors: [
-      { name: "Meschac Irung", avatar: "https://avatars.githubusercontent.com/u/47919550?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Nov 1, 2025",
-    title: "Blockchain's Impact on Global Finance",
-    description: "Understand how blockchain is reshaping the financial landscape.",
-    authors: [
-      { name: "Theo Balick", avatar: "https://avatars.githubusercontent.com/u/68236786?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Nov 10, 2025",
-    title: "The Push for Green Technology",
-    description: "Explore efforts towards sustainable practices in technology.",
-    authors: [
-      { name: "Shadcn", avatar: "https://avatars.githubusercontent.com/u/124599?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Dec 5, 2025",
-    title: "Big Data Driving Innovation",
-    description: "See how big data analytics can unlock new opportunities.",
-    authors: [
-      { name: "Bernard Ngandu", avatar: "https://avatars.githubusercontent.com/u/31113941?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Dec 5, 2025",
-    title: "Real-Time Insights with Big Data",
-    description: "See how big data analytics can unlock new opportunities.",
-    authors: [
-      { name: "Glodie Lukose", avatar: "https://avatars.githubusercontent.com/u/99137927?v=4" },
-    ],
-    href: "#",
-  },
-  {
-    date: "Dec 5, 2025",
-    title: "From Data to Decisions",
-    description: "See how big data analytics can unlock new opportunities insights and more from.",
-    authors: [
-      { name: "Bernard Ngandu", avatar: "https://avatars.githubusercontent.com/u/31113941?v=4" },
-      { name: "Shadcn", avatar: "https://avatars.githubusercontent.com/u/124599?v=4" },
-    ],
-    href: "#",
+    href: "/blog/posts/best-ai-app-builders-2025",
+    image: "https://cdn.gamma.app/0q3kwkx42ofh0ga/6068268a929f45ebb444078c13811dd5/original/AI-Post.png",
   },
 ];
 

@@ -74,7 +74,7 @@ const EnterpriseSection = () => {
     }
   };
   return (
-    <section className="relative overflow-hidden bg-white">
+    <section id="enterprise" className="relative overflow-hidden bg-white">
       {/* Structural Grid Background */}
       <div className="pointer-events-none absolute inset-0 mx-auto hidden max-w-5xl grid-cols-4 lg:grid">
         <div className="h-full border-r border-dashed border-[#d1d5db]"></div>
@@ -89,23 +89,21 @@ const EnterpriseSection = () => {
           {/* Left Column: Text Content */}
           <div className="flex flex-col max-md:text-center">
             <h1 className="mt-8 text-balance text-[2.25rem] font-semibold leading-[1.1] tracking-[-0.02em] text-[#09090b] md:text-[3rem] lg:text-[3.75rem]">
-              Get Started with 21Labs
+              Get Started with Snowbase Studio
             </h1>
             <p className="mt-6 max-w-sm text-balance text-[1.125rem] leading-[1.5] text-[#71717a] max-md:mx-auto">
-              Contact 21Labs to bring your web project to life with our expert development team.
+              Contact Snowbase Studio to bring your web project to life with our expert development team.
             </p>
             <div className="mt-8">
               <a
-                href="https://github.com/ez0000001000000"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:hi@snowbasestudio.com"
                 className="inline-flex h-10 items-center justify-center rounded-md border-[0.5px] border-white/25 bg-[#6366f1] px-8 text-sm font-medium text-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-2px_rgba(0,0,0,0.1)] transition-colors hover:bg-[#6366f1]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6366f1]"
-                onClick={() => posthog.capture("contact_21labs_clicked", {
-                  destination_url: "https://github.com/ez0000001000000",
-                  cta_text: "Contact 21Labs",
+                onClick={() => posthog.capture("contact_snowbase_clicked", {
+                  destination_url: "mailto:hi@snowbasestudio.com",
+                  cta_text: "Contact Snowbase Studio",
                 })}
               >
-                Contact 21Labs
+                Contact Snowbase Studio
               </a>
             </div>
           </div>

@@ -1,3 +1,14 @@
+# Hero Section Code Documentation
+
+## Overview
+The hero section is the main landing section of the Snowbase Studio website. It features an announcement badge, animated headline, call-to-action buttons, and a product display mockup.
+
+## File Structure
+
+### Main Hero Component
+**File**: `src/components/sections/hero.tsx`
+
+```tsx
 "use client";
 
 import React from "react";
@@ -25,7 +36,7 @@ const HeroSection = () => {
               </span>
               <span className="block h-3 w-px bg-gray-200" />
               <a
-                href="mailto:hi@snowbasestudio.com"
+                href="#"
                 className="text-sm font-medium text-primary hover:underline transition-all"
                 onClick={() => posthog.capture("cta_learn_more_clicked", {
                   location: "hero_announcement_badge",
@@ -50,7 +61,7 @@ const HeroSection = () => {
           {/* CTAs */}
           <div className="flex items-center justify-center gap-4">
             <a
-              href="#showcase"
+              href="#"
               className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-md ring-1 ring-[color-mix(in_oklab,var(--color-foreground)_15%,var(--color-primary))] transition-colors hover:bg-primary/90 border-t border-white/20"
               onClick={() => posthog.capture("cta_get_started_clicked", {
                 location: "hero_section",
@@ -61,7 +72,7 @@ const HeroSection = () => {
               See Gallery
             </a>
             <a
-              href="mailto:hi@snowbasestudio.com"
+              href="#"
               className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-transparent bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm ring-1 ring-foreground/10 transition-all hover:bg-muted/50"
               onClick={() => posthog.capture("cta_view_components_clicked", {
                 location: "hero_section",
@@ -121,3 +132,187 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+```
+
+### Highlighter Component (Dependency)
+**File**: `src/components/ui/highlighter.tsx`
+
+```tsx
+"use client";
+
+import { useEffect, useRef } from "react";
+import { cn } from "@/lib/utils";
+
+interface HighlighterProps {
+  children: React.ReactNode;
+  color?: string;
+  animationDuration?: number;
+  strokeWidth?: number;
+  isView?: boolean;
+  className?: string;
+}
+
+export function Highlighter({
+  children,
+  color = "#ffd1dc",
+  animationDuration = 800,
+  strokeWidth = 1,
+  isView = false,
+  className,
+}: HighlighterProps) {
+  const highlighterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!highlighterRef.current || !isView) return;
+
+    const element = highlighterRef.current;
+    const rect = element.getBoundingClientRect();
+
+    // Create SVG overlay
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", rect.width.toString());
+    svg.setAttribute("height", rect.height.toString());
+    svg.style.position = "absolute";
+    svg.style.top = "0";
+    svg.style.left = "0";
+    svg.style.pointerEvents = "none";
+    svg.style.zIndex = "-1";
+
+    // Create highlight path
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    
+    // Calculate path with rounded corners
+    const padding = strokeWidth * 2;
+    const width = rect.width;
+    const height = rect.height;
+    const radius = 4;
+    
+    const d = `M ${padding + radius} ${padding}
+              L ${width - padding - radius} ${padding}
+              Q ${width - padding} ${padding} ${width - padding} ${padding + radius}
+              L ${width - padding} ${height - padding - radius}
+              Q ${width - padding} ${height - padding} ${width - padding - radius} ${height - padding}
+              L ${padding + radius} ${height - padding}
+              Q ${padding} ${height - padding} ${padding} ${height - padding - radius}
+              L ${padding} ${padding + radius}
+              Q ${padding} ${padding} ${padding + radius} ${padding} Z`;
+
+    path.setAttribute("d", d);
+    path.setAttribute("fill", color);
+    path.setAttribute("opacity", "0.3");
+    path.style.transition = `opacity ${animationDuration}ms ease-in-out`;
+
+    svg.appendChild(path);
+    element.appendChild(svg);
+
+    // Animate in
+    setTimeout(() => {
+      path.setAttribute("opacity", "0.3");
+    }, 100);
+
+    return () => {
+      if (element.contains(svg)) {
+        element.removeChild(svg);
+      }
+    };
+  }, [isView, color, animationDuration, strokeWidth]);
+
+  return (
+    <span
+      ref={highlighterRef}
+      className={cn("relative inline-block", className)}
+      style={{
+        backgroundColor: isView ? color : "transparent",
+        opacity: isView ? 0.3 : 0,
+        transition: `opacity ${animationDuration}ms ease-in-out, background-color ${animationDuration}ms ease-in-out`,
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+```
+
+### PostHog Analytics Setup
+**File**: `instrumentation-client.ts`
+
+```typescript
+import posthog from "posthog-js";
+
+const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_API_KEY;
+const posthogHost =
+  process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
+
+if (posthogKey) {
+  posthog.init(posthogKey, {
+    api_host: posthogHost,
+    defaults: "2025-05-24",
+    capture_exceptions: true,
+    debug: process.env.NODE_ENV === "development",
+  });
+} else if (process.env.NODE_ENV === "development") {
+  console.warn("PostHog key is missing. Analytics will be disabled.");
+}
+```
+
+## Key Features
+
+### 1. **Announcement Badge**
+- Displays current status ("Now Accepting Projects")
+- Decorative corner dots for visual appeal
+- Integrated with PostHog analytics
+
+### 2. **Animated Headline**
+- Uses custom Highlighter component for text animation
+- Two highlighted words: "Amazing" (pink) and "Snowbase Studio" (orange)
+- Smooth fade-in animations
+
+### 3. **Call-to-Action Buttons**
+- Primary button: "See Gallery"
+- Secondary button: "Contact Now"
+- Full PostHog tracking implementation
+
+### 4. **Product Display Mockup**
+- Hero image showcase
+- Structural grid nodes for design aesthetics
+- Optimized Next.js Image components
+
+### 5. **Responsive Design**
+- Mobile-first approach with Tailwind CSS
+- Responsive typography and spacing
+- Adaptive layout for different screen sizes
+
+## Analytics Events Tracked
+
+1. `cta_learn_more_clicked` - Announcement badge interactions
+2. `cta_get_started_clicked` - Primary CTA clicks
+3. `cta_view_components_clicked` - Secondary CTA clicks
+
+## Styling Details
+
+- **Color Scheme**: Uses CSS custom properties for theming
+- **Typography**: Responsive font sizes (4xl to 6xl)
+- **Spacing**: Consistent padding and margins
+- **Visual Effects**: Shadows, borders, and gradient overlays
+- **Animations**: Smooth transitions and hover states
+
+## Dependencies
+
+- React (client component)
+- Next.js Image optimization
+- PostHog analytics
+- Tailwind CSS for styling
+- Custom Highlighter component
+
+## Usage
+
+The hero section is imported and used in the main page layout:
+
+```tsx
+import HeroSection from "@/components/sections/hero";
+
+// In page component
+<HeroSection />
+```
+
+This provides a complete, production-ready hero section with modern design, animations, and comprehensive analytics tracking.

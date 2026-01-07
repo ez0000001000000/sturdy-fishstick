@@ -3,7 +3,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "21Labs",
+  title: "Snowbase Studio",
   description: "Professional web development agency creating stunning, high-performance websites. Transform your ideas into digital reality with our expert team.",
 };
 

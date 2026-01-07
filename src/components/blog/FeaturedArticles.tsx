@@ -22,18 +22,7 @@ const FEATURED_ARTICLES: Article[] = [
     description:
       "Discover the top AI-powered app builders that are revolutionizing web development. From no-code platforms to advanced AI assistants, explore tools that can help you build applications faster and more efficiently.",
     image:
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=800&fit=crop",
-    authors: [
-      { name: "ez0000001000000", avatar: "https://avatars.githubusercontent.com/u/207921092?v=4" },
-    ],
-  },
-  {
-    date: "Dec 25, 2025",
-    title: "Modern Web Development Trends",
-    description:
-      "Explore the latest trends shaping web development in 2025. From AI integration to new frameworks, understand what's driving innovation in the web development landscape.",
-    image:
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=800&fit=crop",
+      "https://cdn.gamma.app/0q3kwkx42ofh0ga/6068268a929f45ebb444078c13811dd5/original/AI-Post.png",
     authors: [
       { name: "ez0000001000000", avatar: "https://avatars.githubusercontent.com/u/207921092?v=4" },
     ],
