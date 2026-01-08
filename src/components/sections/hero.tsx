@@ -43,7 +43,7 @@ const HeroSection = () => {
           <h1 className="text-balance text-4xl font-medium tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-[1.1]">
             Build <Highlighter color="#ffd1dc" animationDuration={800} isView={true}>Amazing</Highlighter> Websites with <Highlighter color="#ffb366" animationDuration={800} isView={true} strokeWidth={0.5}>Snowbase Studio</Highlighter>
           </h1>
-          <p className="mx-auto mb-8 mt-4 max-w-2xl text-balance text-lg leading-relaxed text-muted-foreground">
+          <p className="mx-auto mb-8 mt-4 max-w-xl text-balance text-lg leading-relaxed text-muted-foreground">
             Professional web development agency creating stunning, high-performance websites. Transform your ideas into digital reality with our expert team.
           </p>
 
@@ -95,11 +95,11 @@ const HeroSection = () => {
               {/* Fallback pattern for mockup if image isn't available in assets */}
               <div className="absolute inset-0 bg-white">
                 <Image
-                  src="https://cdn.gamma.app/0q3kwkx42ofh0ga/7471ab8c8cab4178b0062d2143c0b7fc/original/Snowbase-Hero-Image.png"
                   alt="Snowbase Studio overview"
                   width={1280}
                   height={720}
-                  className="w-full h-full object-cover"
+                  className="size-full object-cover"
+                  src="https://cdn.gamma.app/0q3kwkx42ofh0ga/7471ab8c8cab4178b0062d2143c0b7fc/original/Snowbase-Hero-Image.png"
                   priority
                 />
               </div>
@@ -109,7 +109,7 @@ const HeroSection = () => {
                 width={1280}
                 height={720}
                 className="absolute inset-0 size-full object-cover pointer-events-none"
-                src="https://cdn.gamma.app/0q3kwkx42ofh0ga/e03a6a36ff134d32aa2aa98aa22355c8/original/Snowbase-Hero-Image.png"
+                src="https://cdn.gamma.app/0q3kwkx42ofh0ga/7471ab8c8cab4178b0062d2143c0b7fc/original/Snowbase-Hero-Image.png"
               />
             </div>
           </div>
