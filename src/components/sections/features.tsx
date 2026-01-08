@@ -74,7 +74,7 @@ export default function FeaturesSection() {
                                     </div>
                                     <div className="p-6 flex-grow">
                                         <h3 className="text-foreground text-lg font-semibold">EZsvg</h3>
-                                        <p className="text-muted-foreground mt-2 text-sm">A massive SVG library with thousands of company logos across 50+ tech categories.</p>
+                                        <p className="text-muted-foreground mt-2 text-sm">A massive SVG library with 700+ company logos across 50+ tech categories.</p>
                                     </div>
                                 </Card>
                             </Link>
