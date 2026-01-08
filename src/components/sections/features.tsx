@@ -14,19 +14,19 @@ export default function FeaturesSection() {
                     </div>
                     <div className="mt-16 space-y-16">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <Link href="https://stickee.vercel.app/" target="_blank" rel="noopener noreferrer" className="group cursor-pointer transition-all duration-200 hover:scale-[1.02] h-full">
+                            <Link href="https://enneagram-analyzer.vercel.app/" target="_blank" rel="noopener noreferrer" className="group cursor-pointer transition-all duration-200 hover:scale-[1.02] h-full">
                                 <Card className="overflow-hidden p-0 hover:shadow-lg transition-shadow duration-200 h-full flex flex-col">
                                     <div className="aspect-video relative flex-shrink-0">
                                         <Image
-                                            src="https://cdn.gamma.app/0q3kwkx42ofh0ga/66921c57cb96469fb41fc2c71f93dc0c/original/image.png"
-                                            alt="Stickee Application"
+                                            src="https://cdn.gamma.app/0q3kwkx42ofh0ga/1cda6b28e9ef463fbdc43a7d0c301a5a/original/Screenshot-2026-01-07-191201.png"
+                                            alt="Enneagram Analyzer"
                                             fill
                                             className="object-cover transition-transform duration-300 group-hover:scale-105"
                                         />
                                     </div>
                                     <div className="p-6 flex-grow">
-                                        <h3 className="text-foreground text-lg font-semibold">Stickee</h3>
-                                        <p className="text-muted-foreground mt-2 text-sm">Stickee revolutionizes note-taking with an intuitive sticky note interface. Perfect for brainstorming, planning, and daily tasks.</p>
+                                        <h3 className="text-foreground text-lg font-semibold">Enneagram Analyzer</h3>
+                                        <p className="text-muted-foreground mt-2 text-sm">Discover your Enneagram type among nine personality profiles to understand your core motivations and growth path.</p>
                                     </div>
                                 </Card>
                             </Link>
