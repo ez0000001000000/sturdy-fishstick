@@ -8,12 +8,12 @@ export default function FeaturesSection() {
     return (
         <section id="showcase">
             <div className="bg-white py-24">
-                <div className="mx-auto w-full max-w-2xl px-6 lg:px-0">
+                <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
                     <div>
                         <h2 className="text-foreground text-balance text-center text-4xl font-semibold">Our Showcase</h2>
                     </div>
-                    <div className="mt-16 space-y-16">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="mt-16">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             <Link href="https://enneagram-analyzer.vercel.app/" target="_blank" rel="noopener noreferrer" className="group cursor-pointer transition-all duration-200 hover:scale-[1.02] h-full">
                                 <Card className="overflow-hidden p-0 hover:shadow-lg transition-shadow duration-200 h-full flex flex-col">
                                     <div className="aspect-video relative flex-shrink-0">

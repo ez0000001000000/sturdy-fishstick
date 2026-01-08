@@ -7,9 +7,9 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 
 const members = [
     { src: 'https://avatars.githubusercontent.com/u/207921092?v=4', name: 'ez0000001000000', role: 'Founder & Developer', github: 'ez0000001000000' },
-    { src: 'https://avatars.githubusercontent.com/u/242980286?v=4', name: 'slammers001', role: 'Co-Founder & Software Engineer', github: 'slammers001' },
-    { src: 'https://avatars.githubusercontent.com/u/207253023?v=4', name: 'h0011000', role: 'Co-Founder & Software Engineer', github: 'h0011000' },
-    { src: 'https://avatars.githubusercontent.com/u/207921618?v=4', name: 'as000010000', role: 'Co-Founder & Software Engineer', github: 'as000010000' },
+    { src: 'https://avatars.githubusercontent.com/u/242980286?v=4', name: 'slammers001', role: 'Co-Founder & Engineer', github: 'slammers001' },
+    { src: 'https://avatars.githubusercontent.com/u/207253023?v=4', name: 'h0011000', role: 'Co-Founder & Engineer', github: 'h0011000' },
+    { src: 'https://avatars.githubusercontent.com/u/207921618?v=4', name: 'as000010000', role: 'Co-Founder & Engineer', github: 'as000010000' },
 ]
 
 export default function TeamSection() {
@@ -22,7 +22,7 @@ export default function TeamSection() {
                         <p className="text-muted-foreground my-4 text-balance text-lg">Our talented professionals bring diverse expertise and passion to every project. Together, we collaborate to deliver exceptional results and innovative solutions for our clients.</p>
                     </div>
 
-                    <div className="@sm:grid-cols-1 @md:grid-cols-2 @lg:grid-cols-3 grid gap-6 md:gap-y-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {members.map((member, index) => (
                             <Link
                                 key={index}
