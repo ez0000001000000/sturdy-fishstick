@@ -87,6 +87,10 @@
 }
 
 @layer base {
+  ::selection {
+    background: #6A6EF1;
+    color: #ffffff;
+  }
   :root {
     --background: #ffffff;
     --foreground: #09090b;
