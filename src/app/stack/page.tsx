@@ -438,6 +438,26 @@ export default function StackPage() {
                 url="https://www.postgresql.org/"
                 imageUrl="https://skillicons.dev/icons?i=postgresql"
               />
+              <ToolCard 
+                name="Lovable"
+                description="AI-powered development platform that helps you build, ship, and scale applications faster with intelligent code generation and real-time collaboration."
+                url="https://lovable.dev/invite/5CY1NLC"
+                imageUrl="https://cdn.gamma.app/0q3kwkx42ofh0ga/068cf0b2838e415a833df7e465069b95/original/lovable-1.svg"
+                tag={{
+                  text: 'NEW',
+                  className: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                }}
+              />
+              <ToolCard 
+                name="v0"
+                description="AI-powered UI generation tool that creates beautiful, production-ready interfaces from natural language descriptions using React and Tailwind CSS."
+                url="https://v0.app/ref/JBARPI"
+                imageUrl="https://cdn.gamma.app/0q3kwkx42ofh0ga/7ca051dd37194e9d9cd047d6d402a099/optimized/v0_light-1.svg"
+                tag={{
+                  text: 'NEW',
+                  className: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                }}
+              />
             </div>
             
             <div className="mt-12 text-center">
