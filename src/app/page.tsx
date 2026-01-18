@@ -4,6 +4,7 @@ import EnterpriseSection from "@/components/sections/enterprise";
 import AIDevsSection from "@/components/sections/ai-devs";
 import TeamSection from "@/components/sections/team";
 import FeaturesSection from "@/components/sections/features";
+import AccordionDemo from "@/components/shadcn-studio/accordion/accordion-01";
 
 export default function Home() {
   return (
@@ -15,6 +16,9 @@ export default function Home() {
         <FeaturesSection />
         <TeamSection />
         <EnterpriseSection />
+        
+        {/* FAQ Section */}
+        <AccordionDemo />
       </main>
     </div>
   );

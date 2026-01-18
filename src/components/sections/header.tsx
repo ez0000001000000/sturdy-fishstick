@@ -29,6 +29,7 @@ const NAV_LINKS: NavItem[] = [
     dropdownItems: [],
   },
   { name: "Blog", href: "/blog", hasDropdown: false },
+  { name: "Stack", href: "/stack", hasDropdown: false },
   { name: "hi@snowbasestudio.com", href: "mailto:hi@snowbasestudio.com", hasDropdown: false },
 ];
 

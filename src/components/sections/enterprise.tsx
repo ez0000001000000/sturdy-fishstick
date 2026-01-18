@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronsUpDown, Check } from "lucide-react";
 import posthog from "posthog-js";
-import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 
 const EnterpriseSection = () => {
@@ -118,7 +117,7 @@ const EnterpriseSection = () => {
               className="relative space-y-6 rounded-t-2xl p-8"
               onSubmit={async (e) => {
                 e.preventDefault();
-                
+
                 const name = (document.getElementById("name") as HTMLInputElement)?.value;
                 const email = (document.getElementById("email") as HTMLInputElement)?.value;
                 const website = (document.getElementById("website") as HTMLInputElement)?.value;
@@ -129,20 +128,18 @@ const EnterpriseSection = () => {
                   toast.error("Please enter your name");
                   return;
                 }
-                
+
                 if (!email?.trim()) {
                   toast.error("Please enter your email");
                   return;
                 }
-                
+
                 if (!message?.trim()) {
                   toast.error("Please enter a message");
                   return;
                 }
 
                 setIsSubmitting(true);
-                
-                const formData = new FormData(e.currentTarget);
 
                 posthog.capture("contact_form_submitted", {
                   form_name: "enterprise_contact",
@@ -166,32 +163,38 @@ const EnterpriseSection = () => {
                 }
 
                 try {
-                  // Save to Supabase
-                  const { data, error } = await supabase
-                    .from('messages')
-                    .insert({
-                      name: name || null,
-                      email: email || null,
-                      website: website ? `https://${website}` : null,
-                      country: selectedCountry || null,
-                      job_function: selectedJob || null,
-                      message: message || null
-                    });
+                  // Generate mailto link via API
+                  const response = await fetch('/api/send-email', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      name,
+                      email,
+                      website,
+                      country: selectedCountry,
+                      jobFunction: selectedJob,
+                      message,
+                    }),
+                  });
 
-                  if (error) {
-                    console.error('Error saving to Supabase:', error);
-                    toast.error("Error sending message. Please try again.");
-                  } else {
-                    console.log('Message saved successfully:', data);
-                    toast.success("Your message has been received and we will try to get back to you between 1-3 business days");
+                  const result = await response.json();
+
+                  if (result.success && result.mailtoLink) {
+                    // Open the mailto link in a new window
+                    window.open(result.mailtoLink, '_blank');
+                    toast.success("Opening your email client with pre-filled message");
                     // Reset form
                     formRef.current?.reset();
                     setSelectedCountry("");
                     setSelectedJob("");
+                  } else {
+                    toast.error(result.error || "Failed to generate email link. Please try again.");
                   }
                 } catch (error) {
-                  console.error('Unexpected error:', error);
-                  toast.error("Error sending message. Please try again.");
+                  console.error('Error:', error);
+                  toast.error("Error generating email link. Please try again.");
                 } finally {
                   setIsSubmitting(false);
                 }
